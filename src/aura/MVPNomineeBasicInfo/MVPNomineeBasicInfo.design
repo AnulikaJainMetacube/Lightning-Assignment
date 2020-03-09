@@ -1,0 +1,6 @@
+<design:component>
+	<design:attribute name="title" label="Title" />
+    <design:attribute name="showTitle" label="Show Header" description="Checkbox" />
+    <design:attribute name="columns" label="Column View" />
+    <design:attribute name="dynamicFieldSet" datasource="apex://ListViewController" />
+</design:component>

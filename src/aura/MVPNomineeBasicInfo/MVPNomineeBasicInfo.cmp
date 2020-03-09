@@ -1,0 +1,39 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" 
+                controller="MVPNomineeBasicInfoController">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!-- define the attributes to be used in the component -->
+    
+    <aura:attribute name="columns" type="String" default="2" />
+    <aura:attribute name="title" type="String" default="Basic Info" />
+    <aura:attribute name="dynamicFieldSet" type="String" default="MVPNomineeBasicInfo" />
+    <aura:attribute name="showTitle" type="Boolean" default="true" />
+    <aura:attribute name="contactId" type="String" />
+	<aura:attribute name="fields" type="String[]" />
+    <aura:handler name="change" value="{!v.dynamicFieldSet}" action="{!c.doInit}"/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <article class="slds-card">
+        
+        	<!-- page header -->    
+         	<aura:if isTrue="{!v.showTitle}" >
+            	<h2 class="slds-card__header-title">
+                	<lightning:icon iconName="standard:shift_type" size="small" />&nbsp;
+                	<span>{!v.title}</span>
+                </h2>
+            </aura:if>
+            <!-- page header end -->
+            
+        	<div class="slds-card__body slds-card__body_inner">
+            	<aura:if isTrue="{!v.fields.length>0}" >
+                    <lightning:recordForm style="width:100%;"
+                    recordId="{!v.contactId}"
+                    objectApiName="Contact"
+                    fields="{!v.fields}"
+                    columns="{!v.columns}"
+                    mode="readonly" />
+            	</aura:if>
+            </div>
+    	
+    </article>  
+</aura:component>
