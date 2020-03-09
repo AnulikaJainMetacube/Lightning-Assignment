@@ -1,0 +1,13 @@
+<design:component>
+    <design:attribute name="cardOrTable" label="View"  datasource="Card,DataTable" />
+    <design:attribute name="ObjectType" label="Object Type" datasource="Contribution__c,Feedback__c" />
+    <design:attribute name="showTitle" label="Show Header" description="Checkbox" />
+    <design:attribute name="recType" label="Record Type" datasource="Self-feedback,Feedback" />
+	<design:attribute name="order" label="Order"  datasource="ASC,DESC" />
+    <design:attribute name="showHFS" label="Show Horizontal FieldSet" description="Checkbox" />
+    <design:attribute name="showVFS" label="Show Vertical FieldSet" description="Checkbox" />
+    <design:attribute name="showDFS" label="Show Detail FieldSet" description="Checkbox" />
+    <design:attribute name="dynamicVFieldSet" datasource="apex://FieldsetListController" />
+    <design:attribute name="dynamicDFieldSet" datasource="apex://FieldsetListController" />
+    <design:attribute name="dynamicTableFieldSet" datasource="apex://FieldsetListController" />
+</design:component>

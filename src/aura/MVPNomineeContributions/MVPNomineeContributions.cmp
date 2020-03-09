@@ -1,0 +1,60 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global">
+    
+    <aura:attribute name="order" type="String" default="ASC" />
+    <aura:attribute name="ObjectType" type="String" default="Contribution__c"/>
+    <aura:attribute name="recType" type="String" default="Self-feedback" />
+    <aura:attribute name="showTitle" type="Boolean" default="true" />
+    <aura:attribute name="showHFS" type="Boolean" default="true" />
+    <aura:attribute name="showVFS" type="Boolean" default="true" />
+    <aura:attribute name="showDFS" type="Boolean" default="true" />
+    <aura:attribute name="dynamicVFieldSet" type="String" default="Vertical_Fieldset" />
+    <aura:attribute name="dynamicDFieldSet" type="String" default="Detail_fieldset" />
+    <aura:attribute name="dynamicTableFieldSet" type="String" default="Vertical_Fieldset" />
+    <aura:attribute name="cardOrTable" type="String" default="Card" />
+    <aura:handler name="change" value="{!v.dynamicVFieldSet}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.dynamicDFieldSet}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.cardOrTable}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.dynamicTableFieldSet}" action="{!c.doInit}"/>
+    <article class="slds-card">
+        <aura:if isTrue="{!v.showTitle}" >
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <!-- page header -->    
+                    <div class="slds-media__figure">    
+                        <lightning:icon iconName="standard:shift_type" size="small" />&nbsp;
+                    </div>
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title">
+                            <aura:if isTrue="{!v.ObjectType == 'Contribution__c'}" >
+                                <span>Contributions</span>
+                            </aura:if>
+                            <aura:if isTrue="{!and(v.ObjectType == 'Feedback__c', v.recType == 'Feedback')}" >
+                                <span>Feedback</span>
+                            </aura:if>
+                            <aura:if isTrue="{!and(v.ObjectType == 'Feedback__c', v.recType == 'Self-feedback')}" >
+                                <span>Self-Feedback</span>
+                            </aura:if>
+                        </h2>
+                    </div>
+                    <aura:if isTrue="{!and(v.ObjectType == 'Feedback__c', v.recType == 'Feedback')}" >
+                        <div onclick="{!c.refreshChild}" title="Refresh">
+                            <span class="slds-avatar slds-avatar--x-small" >
+                                <img src="{!$Resource.RefreshImage}"  />
+                            </span>
+                        </div>
+                    </aura:if>            
+                </header>
+            <!-- page header end -->
+            </div>
+        </aura:if>
+        <div class="slds-card__body slds-card__body_inner">
+        	<c:Child cardOrTable = "{!v.cardOrTable}" dynamicVFieldSet="{!v.dynamicVFieldSet}" 
+                     dynamicDFieldSet="{!v.dynamicDFieldSet}" 
+                     recType="{!v.recType}" showHFS="{!v.showHFS}" 
+                     showVFS="{!v.showVFS}" showDFS="{!v.showDFS}" 
+                     sObjectType="{!v.ObjectType}" idValue="{!v.recordId}" order="{!v.order}"
+                     dynamicTableFieldSet = "{!v.dynamicTableFieldSet}" />
+        </div>
+    </article>
+</aura:component>

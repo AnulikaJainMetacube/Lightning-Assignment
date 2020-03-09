@@ -1,0 +1,34 @@
+<aura:component controller="ChildController">
+    <aura:attribute name="sObjectType" type="String" /> 
+    <aura:attribute name="idValue" type="String"/>
+    <aura:attribute name="contactId" type="String"/>
+    <aura:attribute name="order" type="String" />
+    <aura:attribute name="result" type="Map" /> 
+    <aura:attribute name="recList" type="Map" />
+    <aura:attribute name="yearList" type="List" />
+    <aura:attribute name="recType" type="String" default="Self-feedback" />
+    <aura:attribute name="countContribution" type="Integer" />
+    <aura:attribute name="cardOrTable" type="String" default="Card" />
+    <aura:attribute name="dynamicVFieldSet" type="String" default="Vertical_Fieldset" />
+    <aura:attribute name="dynamicDFieldSet" type="String" default="Detail_fieldset" />
+    <aura:attribute name="dynamicTableFieldSet" type="String" default="Vertical_Fieldset" />
+    <aura:method name="refreshMe" action="{!c.refreshMe}" access="public">
+        <aura:attribute name="ObjectType" type="String" />
+        <aura:attribute name="idValue" type="String" />
+        <aura:attribute name="order" type="String" default="ASC"/>
+        <aura:attribute name="recType" type="String" />
+    </aura:method>  
+    <aura:attribute name="showHFS" type="Boolean" default="true" />
+    <aura:attribute name="showVFS" type="Boolean" default="true" />
+    <aura:attribute name="showDFS" type="Boolean" default="true" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:if isTrue="{!not(empty(v.result))}" >
+        <aura:iteration items="{!v.yearList}" var="year" indexVar="idx">
+           <c:subChild cardOrTable = "{!v.cardOrTable}" count="{!idx}" sObjectType="{!v.sObjectType}" 
+                       result="{!v.result}" key="{!year}" recType="{!v.recType}" 
+                       countContribution="{!v.countContribution}"
+                       showHFS="{!v.showHFS}" showVFS="{!v.showVFS}" showDFS="{!v.showDFS}"
+                        />
+        </aura:iteration>
+    </aura:if>
+</aura:component>

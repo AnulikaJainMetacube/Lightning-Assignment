@@ -1,0 +1,99 @@
+<aura:component controller="subChildController">
+    <aura:attribute name="key" type="String" />
+    <aura:attribute name="sObjectType" type="String" /> 
+    <aura:attribute name="result" type="Map" />
+    <aura:attribute name="vfs" type="List" />
+    <aura:attribute name="dfs" type="List" />
+    <aura:attribute name="recMapOfYear" type="Map" />
+    <aura:attribute name="recList" type="List" />
+    <aura:attribute name="recType" type="String" /> 
+    <aura:attribute name="countContribution" type="Integer" />
+    <aura:attribute name="showHFS" type="Boolean" default="true" />
+    <aura:attribute name="showVFS" type="Boolean" default="true" />
+    <aura:attribute name="showDFS" type="Boolean" default="true" />   
+    <aura:attribute name="count" type="Integer" />   
+    <aura:attribute name="data" type="Object" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="cardOrTable" type="String" default="Card" />
+    <aura:handler action="{!c.doInit}" name="init" value="{!this}" />
+    
+    <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true" >
+            <lightning:accordionSection name="{!(v.count + 'section')}" label="{! v.key + '(' + v.recList.length + ')'}">
+                <aura:set attribute="body">
+                    <aura:iteration items="{!v.recList}" var="rec" >
+                        <aura:if isTrue="{!v.cardOrTable == 'Card'}">
+                            <div class="slds-card_boundary" >
+                                <aura:if isTrue="{!and(v.sObjectType == 'Feedback__c', v.recType=='Feedback')}" >
+                                    <div style="text-align:right;" name="{!rec.Id}" onclick="{!c.Add}" title="Add Contribution">
+                                        <span class="slds-badge">{!v.countContribution}</span>
+                                        <span class="slds-avatar"  >
+                                            <img src="{!$Resource.AddImage}"  />
+                                        </span>
+                                    </div>                                
+                                </aura:if>
+                                <div class="slds-grid slds-wrap">
+                                    <aura:if isTrue="{!and(v.sObjectType == 'Contribution__c',v.showHFS)}" >
+                                        <div class="slds-col">
+                                            <div>Contribution</div>
+                                            <div>{!rec.Name}</div>
+                                        </div>
+                                        <div class="slds-col">
+                                            <div>Categories</div>
+                                            <div>{!rec.Pillars__c}</div>
+                                        </div>
+                                        <div class="slds-col">
+                                            <div>Assessment</div>
+                                            <div>{!rec.Assessment__c}</div>
+                                        </div>
+                                    </aura:if>
+                                </div>
+                                    
+                                <aura:if isTrue="{!and(v.vfs.length>0,v.showVFS)}" >    
+                                    <lightning:recordForm style="width:100%;"
+                                            recordId="{!rec.Id}"
+                                            objectApiName="{!v.sObjectType}"
+                                            fields="{!v.vfs}"
+                                            columns="2"
+                                            mode="readonly" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.showHFS}">
+                                    <aura:if isTrue="{!and(v.sObjectType == 'Feedback__c', v.recType=='Feedback')}" >
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col">
+                                                <div>Advocacy (Rating)</div>
+                                                <div>{!rec.Advocacy_Rating__c}</div>
+                                            </div>
+                                            <div class="slds-col">
+                                                <div>Expertise (Rating)</div>
+                                                <div>{!rec.Expertise_Rating__c}</div>
+                                            </div>
+                                            <div class="slds-col">
+                                                <div>Generosity (Rating)</div>
+                                                <div>{!rec.Generosity_Rating__c}</div>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                </aura:if>
+                                <aura:if isTrue="{!v.showDFS}">
+                                    <aura:if isTrue="{!v.dfs.length>0}" >    
+                                        <lightning:recordForm style="width:100%;"
+                                                recordId="{!rec.Id}"
+                                                objectApiName="{!v.sObjectType}"
+                                                fields="{!v.dfs}"
+                                                columns="1"
+                                                mode="readonly" />
+                                    </aura:if>
+                                </aura:if>
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.sObjectType == 'Contribution__c',v.cardOrTable == 'DataTable')}">
+                             <lightning:datatable data="{! v.data }"
+        										  columns="{! v.columns }"
+        										  keyField="id"
+                                                  hideCheckboxColumn="true" />
+                        </aura:if>
+    				</aura:iteration>
+                </aura:set>
+        </lightning:accordionSection>
+    </lightning:accordion>
+</aura:component>
